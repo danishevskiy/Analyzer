@@ -12,7 +12,7 @@ import java.util.List;
 
 public class SimpleAnalyzer {
 
-    private static final Logger logger = LoggerFactory.getLogger(Output.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Output.class);
 
     private String urlDiff;
     private List<String> potentialTargets;
@@ -22,8 +22,14 @@ public class SimpleAnalyzer {
         this.potentialTargets = potentialTargets;
     }
 
-    public Elements analyze() throws IOException {
-        Document docDiff = Jsoup.connect(urlDiff).get();
+    public Elements analyze() {
+        Document docDiff = null;
+        try {
+            docDiff = Jsoup.connect(urlDiff).get();
+        } catch (IOException e) {
+            LOGGER.error("URL diff isn't correct or null");
+            e.printStackTrace();
+        }
         Elements temp = new Elements();
         int numberСoincidences = 0;
         int size = potentialTargets.size();
@@ -32,7 +38,7 @@ public class SimpleAnalyzer {
             Elements elements = docDiff.select("a:contains(" + potentialTarget +")");
             // simple algorithm for analysis
             if (numberСoincidences >= (size/2)) {
-                logger.info("It's potential element");
+                LOGGER.info("It's potential element");
                 break;
             }
             for (Element e : elements){

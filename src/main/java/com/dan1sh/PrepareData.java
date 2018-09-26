@@ -13,7 +13,7 @@ import java.util.List;
 
 public class PrepareData {
 
-    private static final Logger appLogger = LoggerFactory.getLogger(Output.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Output.class);
 
     private String urlOriginal;
     private String target;
@@ -23,10 +23,16 @@ public class PrepareData {
         this.target = target;
     }
 
-    public List<String> prepare() throws IOException {
+    public List<String> prepare() {
         List<String> potentialTargets = new ArrayList<>(Arrays.asList(target.split("-")));
 
-        Document docOriginal = Jsoup.connect(urlOriginal).get();
+        Document docOriginal = null;
+        try {
+            docOriginal = Jsoup.connect(urlOriginal).get();
+        } catch (IOException e) {
+            LOGGER.error("URL original isn't correct or null");
+            e.printStackTrace();
+        }
         Element id = docOriginal.getElementById(target);
         String text = id.text();
 

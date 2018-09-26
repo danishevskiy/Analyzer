@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class Output {
 
-    private static final Logger appLogger = LoggerFactory.getLogger(Output.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(Output.class);
 
     private String filePath;
     private Elements diffElements;
@@ -29,7 +29,7 @@ public class Output {
                 String path = getXPath(e);
                 writeToOutputFile(path);
             }
-            appLogger.info("You can find the result on: " + filePath);
+            LOGGER.info("You can find the result on: " + filePath);
         }
     }
 
@@ -52,7 +52,7 @@ public class Output {
             Files.write(Paths.get(filePath), s.getBytes());
         }
         catch(IOException ex){
-            System.out.println(ex.getMessage());
+            LOGGER.error(ex.getMessage());
         }
     }
 

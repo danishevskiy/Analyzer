@@ -6,7 +6,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.List;
+import java.util.Optional;
+// https://agileengine.bitbucket.io/beKIvpUlPMtzhfAy/samples/sample-0-origin.html https://agileengine.bitbucket.io/beKIvpUlPMtzhfAy/samples/sample-2-container-and-clone.html make-everything-ok-button
 
+// file:///C:/sample-0-origin.html file:///C:/sample-1-evil-gemini.html make-everything-ok-button
 public class App {
 
     private static final Logger APP_LOGGER = LoggerFactory.getLogger(App.class);
@@ -28,7 +31,7 @@ public class App {
         List<String> potentialTargets = prepareData.prepare();
 
         SimpleAnalyzer analyzer = new SimpleAnalyzer(urlDiff, potentialTargets);
-        Elements elements = analyzer.analyze();
+        Optional<Elements> elements = Optional.ofNullable(analyzer.analyze());
 
         Output output = new Output(elements, FILE_PATH);
         output.createResult();

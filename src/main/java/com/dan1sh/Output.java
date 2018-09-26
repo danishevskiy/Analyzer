@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class Output {
@@ -16,16 +17,16 @@ public class Output {
     private static final Logger LOGGER = LoggerFactory.getLogger(Output.class);
 
     private String filePath;
-    private Elements diffElements;
+    private Optional<Elements> diffElements;
 
-    public Output(Elements diffElements, String filePath) {
+    public Output(Optional<Elements> diffElements, String filePath) {
         this.diffElements = diffElements;
         this.filePath = filePath;
     }
 
     public void createResult() {
-        if (diffElements.size()!=0) {
-            for (Element e : diffElements){
+        if (diffElements.get().size() != 0) {
+            for (Element e : diffElements.get()){
                 String path = getXPath(e);
                 writeToOutputFile(path);
             }
@@ -51,8 +52,9 @@ public class Output {
         try {
             Files.write(Paths.get(filePath), s.getBytes());
         }
-        catch(IOException ex){
-            LOGGER.error(ex.getMessage());
+        catch(IOException e){
+            LOGGER.error("File path is wrong");
+            e.printStackTrace();
         }
     }
 
